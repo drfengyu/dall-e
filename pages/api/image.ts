@@ -14,7 +14,7 @@ export default async function handler(
       headers: {
         Authorization: `Bearer ${process.env.QSTASH_TOKEN}`, // QSTASH 的授权令牌
         // Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // OpenAI API 的授权令牌（已注释）
-        "upstash-forward-Authorization": `Bearer ${process.env.OPENAI_API_KEY}`, // 转发给 OpenAI API 的授权令牌
+        // "upstash-forward-Authorization": `Bearer ${process.env.OPENAI_API_KEY}`, // 转发给 OpenAI API 的授权令牌
         "Content-Type": "application/json", // 请求的内容类型
         "Upstash-Callback": `${VERCEL_URL}/api/callback`, // 回调 URL
       },
