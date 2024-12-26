@@ -8,6 +8,17 @@ export default async function handler(
   res: NextApiResponse // 响应对象
 ) {
   const { prompt } = req.query; // 从请求查询参数中获取 prompt
+  const responseData = {
+  success: true,
+  messageId:uuidv4(); // 生成随机的 GUID,
+  data: {
+    prompt: prompt,
+    result: 'Your generated image will be available shortly.'
+    
+  }
+};
+
+const responseText = JSON.stringify(responseData);
   try {
     const response = await fetch(`${IMAGE_API}/${encodeURIComponent(prompt as string)}`, {
       method: "GET", // 使用 GET 方法
