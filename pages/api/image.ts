@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"; // 导入 Next.js API 请求和响应类型
 const QSTASH = `https://qstash.upstash.io/v1/publish/`; // QSTASH 服务的 URL
-const DALL_E = "https://api.openai.com/v1/images/generations"; // OpenAI DALL-E API 的 URL
+const IMAGE_API = "https://text.drfengling.asia"; // 新的 API URL
 const VERCEL_URL = "https://dalle-2-jade.vercel.app"; // Vercel 部署的 URL
 
 export default async function handler(
@@ -9,8 +9,8 @@ export default async function handler(
 ) {
   const { prompt } = req.query; // 从请求查询参数中获取 prompt
   try {
-    const response = await fetch(`${QSTASH + DALL_E}`, {
-      method: "POST", // 使用 POST 方法
+    const response = await fetch(`${IMAGE_API}/${encodeURIComponent(prompt as string)}`, {
+      method: "GET", // 使用 GET 方法
       headers: {
         Authorization: `Bearer ${process.env.QSTASH_TOKEN}`, // QSTASH 的授权令牌
         // Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // OpenAI API 的授权令牌（已注释）
@@ -18,12 +18,6 @@ export default async function handler(
         "Content-Type": "application/json", // 请求的内容类型
         "Upstash-Callback": `${VERCEL_URL}/api/callback`, // 回调 URL
       },
-      body: JSON.stringify({
-        prompt, // 使用的 prompt
-        n: 1, // 生成的图像数量
-        size: "1024x1024", // 图像的尺寸
-        response_format: "b64_json", // 响应格式为 base64 编码的 JSON
-      }),
     });
     const json = await response.json(); // 解析响应的 JSON
     return res.status(202).json({ id: json.messageId }); // 返回响应，状态码 202，包含 messageId
@@ -31,7 +25,5 @@ export default async function handler(
     return res
       .status(500) // 返回错误响应，状态码 500
       .json({ message: error.message, type: "Internal server error" }); // 错误信息
-  }
-}
   }
 }
