@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"; // 导入 Next.js API 请求和响应类型
 const QSTASH = `https://qstash.upstash.io/v1/publish/`; // QSTASH 服务的 URL
-const IMAGE_API = "https://text.drfengling.asia"; // 新的 API URL
+const IMAGE_API = process.env.IMAGE_API_URL; // 新的 API URL
 const VERCEL_URL = "https://dalle-2-jade.vercel.app"; // Vercel 部署的 URL
 
 export default async function handler(
