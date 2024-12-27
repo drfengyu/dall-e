@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"; // 导入 Next.js API 请求和响应类型
 const QSTASH = `https://qstash.upstash.io/v1/publish/`; // QSTASH 服务的 URL
 const IMAGE_API = process.env.IMAGE_API_URL; // 新的 API URL
+const WEB_API = process.env.WEB_API; // 新的 API URL
 const VERCEL_URL = "https://dalle-2-jade.vercel.app"; // Vercel 部署的 URL
 
 export default async function handler(
@@ -8,13 +9,14 @@ export default async function handler(
   res: NextApiResponse // 响应对象
 ) {
   const { prompt } = req.query; // 从请求查询参数中获取 prompt
+  const { url } = `${IMAGE_API}/${encodeURIComponent(prompt as string)}`;
   const responseData = {
   success: true,
-  messageId:uuidv4(); // 生成随机的 GUID,
+  messageId: uuidv4(); // 生成随机的 GUID,
   data: {
     prompt: prompt,
-    result: 'Your generated image will be available shortly.'
-    
+    result: 'Your generated image will be available shortly.',
+    url: url
   }
 };
 
