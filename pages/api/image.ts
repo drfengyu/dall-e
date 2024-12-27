@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next"; // 导入 Next.js API �
 const QSTASH = `https://qstash.upstash.io/v1/publish/`; // QSTASH 服务的 URL
 const IMAGE_API = process.env.IMAGE_API_URL; // 新的 API URL
 const WEB_API = process.env.WEB_API; // 新的 API URL
-const VERCEL_URL = "https://dalle-2-jade.vercel.app"; // Vercel 部署的 URL
+const VERCEL_URL = process.env.VERCEL_URL; // Vercel 部署的 URL  "https://dalle-2-jade.vercel.app"
 
 export default async function handler(
   req: NextApiRequest, // 请求对象
@@ -22,7 +22,7 @@ export default async function handler(
 
 const responseText = JSON.stringify(responseData);
   try {
-    const response = await fetch(`${IMAGE_API}/${encodeURIComponent(prompt as string)}`, {
+    const response = await fetch(`${WEB_API}/${encodeURIComponent(prompt as string)}`, {
       method: "GET", // 使用 GET 方法
       headers: {
         Authorization: `Bearer ${process.env.QSTASH_TOKEN}`, // QSTASH 的授权令牌
