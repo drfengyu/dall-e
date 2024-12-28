@@ -23,7 +23,7 @@ export default function Home() {
         setImage(json.data[0].url); // 设置图片 URL
       }
     },
-    loading ? 1000 : null // 如果正在加载，每秒轮询一次
+    loading ? 5000 : null // 如果正在加载，每秒轮询一次
   );
 
   // 处理表单提交
@@ -99,15 +99,15 @@ export default function Home() {
                   "opacity-100": canShowImage,
                 })}
                 // src={image}
-                src={`data:image/png;base64,${image}`} {/* 显示生成的图片 */}
+                src={`data:image/png;base64,${image}`}
               />
             </div>
-
+9
             <div
               className={cn(
                 "w-full sm:w-[400px] absolute top-0.5 overflow-hidden rounded-2xl bg-white/5 shadow-xl shadow-black/5",
                 {
-                  "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-500/10 before:to-transpa[...]
+                  "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-500/10 before:to-transpa[...]":
                     showLoadingState,
                   "opacity-0 shadow-none": canShowImage,
                 }

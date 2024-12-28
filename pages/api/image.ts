@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"; // 导入 Next.js API 请求和响应类型
+import { v4 as uuidv4 } from 'uuid'; // 从 uuid 库中导入 v4 函数，并将其重命名为 uuidv4
 const QSTASH = `https://qstash.upstash.io/v1/publish/`; // QSTASH 服务的 URL
 const IMAGE_API = process.env.IMAGE_API_URL; // 新的 API URL
 const WEB_API = process.env.WEB_API; // 新的 API URL
@@ -9,23 +10,12 @@ export default async function handler(
   res: NextApiResponse // 响应对象
 ) {
   const { prompt } = req.query; // 从请求查询参数中获取 prompt
-  const { url } = `${IMAGE_API}/${encodeURIComponent(prompt as string)}`;
-  const responseData = {
-  success: true,
-  messageId: uuidv4(); // 生成随机的 GUID,
-  data: {
-    prompt: prompt,
-    result: 'Your generated image will be available shortly.',
-    url: url
-  }
-};
-
-const responseText = JSON.stringify(responseData);
+  const  url = `${IMAGE_API}/${encodeURIComponent(prompt as string)}`;
   try {
-    const response = await fetch(`${WEB_API}/${encodeURIComponent(prompt as string)}`, {
+    const response = await fetch(`${WEB_API}?prompt=${encodeURIComponent(prompt as string)}`, {
       method: "GET", // 使用 GET 方法
       headers: {
-        Authorization: `Bearer ${process.env.QSTASH_TOKEN}`, // QSTASH 的授权令牌
+        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`, 
         // Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // OpenAI API 的授权令牌（已注释）
         // "upstash-forward-Authorization": `Bearer ${process.env.OPENAI_API_KEY}`, // 转发给 OpenAI API 的授权令牌
         "Content-Type": "application/json", // 请求的内容类型
