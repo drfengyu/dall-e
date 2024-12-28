@@ -8,6 +8,7 @@ export default async function handler(
   const { body } = req;
   try {
     const { messageId,data } = body; // 从 req.body 中提取 messageId
+    console.error("Error in callback API:", messageId); // 记录错误日志
     const url=data[0].url;
     await redis.set(messageId, url); // 将 messageId 作为键存储到 Redis 中
     return res.status(200).send(url); // 返回成功响应
